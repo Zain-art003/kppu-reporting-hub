@@ -8,45 +8,94 @@ const PageLoader = () => {
       transition={{ duration: 0.2 }}
       className="fixed inset-0 z-50 flex items-center justify-center bg-navy"
     >
-      <div className="text-center relative">
-        {/* Spinning Ring */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{
-            duration: 1.5,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="w-24 h-24 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-        >
-          <svg viewBox="0 0 100 100" className="w-full h-full">
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="#D4AF37"
-              strokeWidth="4"
-              strokeDasharray="70 30"
-              strokeLinecap="round"
+      <div className="text-center">
+        {/* Multiple Spinning Rings */}
+        <div className="relative w-32 h-32 mx-auto mb-6">
+          {/* Outer Ring */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0"
+          >
+            <svg viewBox="0 0 100 100" className="w-full h-full">
+              <circle
+                cx="50"
+                cy="50"
+                r="48"
+                fill="none"
+                stroke="#D4AF37"
+                strokeWidth="2"
+                strokeDasharray="20 80"
+                strokeLinecap="round"
+              />
+            </svg>
+          </motion.div>
+          
+          {/* Middle Ring - counter rotate */}
+          <motion.div
+            animate={{ rotate: -360 }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-2"
+          >
+            <svg viewBox="0 0 100 100" className="w-full h-full">
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="#FFD700"
+                strokeWidth="3"
+                strokeDasharray="30 70"
+                strokeLinecap="round"
+              />
+            </svg>
+          </motion.div>
+          
+          {/* Inner Ring */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-4"
+          >
+            <svg viewBox="0 0 100 100" className="w-full h-full">
+              <circle
+                cx="50"
+                cy="50"
+                r="42"
+                fill="none"
+                stroke="#D4AF37"
+                strokeWidth="2"
+                strokeDasharray="15 85"
+                strokeLinecap="round"
+              />
+            </svg>
+          </motion.div>
+          
+          {/* Center Logo */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <img
+              src="/Logo_kppu.jpeg"
+              alt="Logo KPPU"
+              className="w-10 h-10 rounded-full object-contain"
             />
-          </svg>
-        </motion.div>
-        
-        {/* Static Logo */}
-        <div className="w-16 h-16 mx-auto">
-          <img
-            src="/Logo_kppu.jpeg"
-            alt="Logo KPPU"
-            className="w-full h-full rounded-full object-contain"
-          />
+          </div>
         </div>
         
+        {/* Pulsing Text */}
         <motion.p
-          initial={{ opacity: 0.5 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, repeat: Infinity, repeatType: "reverse" }}
-          className="text-white text-sm font-medium mt-8"
+          animate={{
+            opacity: [0.5, 1, 0.5],
+            scale: [1, 1.05, 1]
+          }}
+          transition={{ duration: 1, repeat: Infinity }}
+          className="text-gold text-lg font-bold"
+        >
+          WBS KPPU
+        </motion.p>
+        <motion.p
+          animate={{ opacity: [0.3, 0.7, 0.3] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+          className="text-white/60 text-sm mt-1"
         >
           Memuat...
         </motion.p>
