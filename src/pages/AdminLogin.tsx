@@ -94,8 +94,7 @@ const AdminLogin = () => {
               <img
                 src="/Logo_kppu.jpeg"
                 alt="Logo KPPU"
-                className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-3 rounded-full object-cover shadow-xl animate-float"
-                style={{ animationDuration: '3s' }}
+                className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-3 rounded-full object-contain shadow-xl"
               />
               <h1 className="font-heading font-bold text-xl md:text-2xl text-foreground mt-4">Login Admin</h1>
               <p className="text-muted-foreground text-sm mt-1">Masuk ke Panel Admin WBS KPPU</p>

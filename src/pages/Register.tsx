@@ -177,10 +177,9 @@ const Register = () => {
           <div className="glass-card p-6 md:p-8 animate-fade-in-up hover:shadow-xl transition-shadow duration-300">
             <div className="text-center mb-6">
               <img
-                src="/logo-kppu1.png"
+                src="/Logo_kppu.jpeg"
                 alt="Logo KPPU"
-                className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-3 rounded-full object-cover shadow-xl animate-float"
-                style={{ animationDuration: "3s" }}
+                className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-3 rounded-full object-contain shadow-xl"
               />
               <h1 className="font-heading font-bold text-xl md:text-2xl text-foreground mt-4">
                 Register

@@ -45,9 +45,9 @@ const Navbar = () => {
       <div className="flex items-center justify-between py-3 px-4 md:px-8 w-full">
         <Link to="/" className="flex items-center gap-3 group">
           <img
-            src="/logo-kppu1.png"
+            src="/Logo_kppu.jpeg"
             alt="Logo KPPU"
-            className="w-10 h-10 rounded-full object-cover transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+            className="w-12 h-12 object-contain transition-transform duration-300 group-hover:scale-105"
           />
           <span className="text-primary-foreground font-heading text-sm md:text-base font-bold hidden sm:block">
             WBS KPPU

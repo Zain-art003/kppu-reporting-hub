@@ -71,8 +71,8 @@ const AdminSidebar = ({ activeSection = "dashboard", onSectionChange }: AdminSid
         {/* Logo Section */}
         <div className="p-4 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shrink-0 overflow-hidden">
-              <img src="/Logo_kppu.jpeg" alt="Logo KPPU" className="w-full h-full object-cover" />
+            <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center shrink-0 overflow-hidden">
+              <img src="/Logo_kppu.jpeg" alt="Logo KPPU" className="w-full h-full object-contain" />
             </div>
             {!collapsed && (
               <div className="flex-1 min-w-0">
