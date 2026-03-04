@@ -1,13 +1,12 @@
 const HeroSection = () => {
   return (
     <section
-      className="relative w-full min-h-[500px] md:min-h-[600px] lg:min-h-[700px] flex flex-col items-center justify-center text-center py-12 md:py-16 overflow-hidden"
+      className="relative w-full min-h-[500px] md:min-h-[600px] lg:min-h-[700px] flex flex-col items-center justify-center text-center py-12 md:py-16 overflow-x-hidden"
       style={{
         backgroundImage: `url('/logo-kppu1.png')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        animation: "slowZoom 20s ease-in-out infinite alternate",
       }}
     >
       {/* Overlay lebih cerah untuk memastikan text tetap readable */}

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,42 +16,48 @@ import ReportForm from "./pages/ReportForm";
 import ReportDetail from "./pages/ReportDetail";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
+import PageLoader from "@/components/PageLoader";
 
 const queryClient = new QueryClient();
 
-// Wrapper component untuk animasi
+// Wrapper component untuk loading screen
 const AnimatedRoutes = () => {
   const location = useLocation();
-  
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageWrapper><Index /></PageWrapper>} />
-        <Route path="/login" element={<PageWrapper><Login /></PageWrapper>} />
-        <Route path="/register" element={<PageWrapper><Register /></PageWrapper>} />
-        <Route path="/track" element={<PageWrapper><Track /></PageWrapper>} />
-        <Route path="/admin/login" element={<PageWrapper><AdminLogin /></PageWrapper>} />
-        <Route path="/dashboard" element={<PageWrapper><Dashboard /></PageWrapper>} />
-        <Route path="/report/new" element={<PageWrapper><ReportForm /></PageWrapper>} />
-        <Route path="/report/:id" element={<PageWrapper><ReportDetail /></PageWrapper>} />
-        <Route path="/admin" element={<PageWrapper><AdminDashboard /></PageWrapper>} />
-        <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
-      </Routes>
-    </AnimatePresence>
+    <>
+      {/* Loading Screen */}
+      <AnimatePresence>
+        {isLoading && <PageLoader />}
+      </AnimatePresence>
+      
+      {/* Page Content */}
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/track" element={<Track />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/report/new" element={<ReportForm />} />
+          <Route path="/report/:id" element={<ReportDetail />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AnimatePresence>
+    </>
   );
 };
-
-// Komponen wrapper untuk animasi halaman
-const PageWrapper = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -20 }}
-    transition={{ duration: 0.3 }}
-  >
-    {children}
-  </motion.div>
-);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
