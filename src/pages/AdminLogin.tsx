@@ -91,11 +91,13 @@ const AdminLogin = () => {
         <div className="w-full max-w-md">
           <div className="glass-card p-6 md:p-8 animate-fade-in-up hover:shadow-xl transition-shadow duration-300">
             <div className="text-center mb-6">
-              <img
-                src="/Logo_kppu.jpeg"
-                alt="Logo KPPU"
-                className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-3 rounded-full object-contain shadow-xl"
-              />
+              <Link to="/">
+                <img
+                  src="/Logo_kppu.jpeg"
+                  alt="Logo KPPU"
+                  className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-3 rounded-full object-contain shadow-xl hover:scale-105 transition-transform cursor-pointer"
+                />
+              </Link>
               <h1 className="font-heading font-bold text-xl md:text-2xl text-foreground mt-4">Login Admin</h1>
               <p className="text-muted-foreground text-sm mt-1">Masuk ke Panel Admin WBS KPPU</p>
             </div>

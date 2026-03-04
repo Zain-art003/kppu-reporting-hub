@@ -47,7 +47,7 @@ const Navbar = () => {
           <img
             src="/Logo_kppu.jpeg"
             alt="Logo KPPU"
-            className="w-12 h-12 object-contain transition-transform duration-300 group-hover:scale-105"
+            className="w-12 h-12 rounded-full object-contain transition-transform duration-300 group-hover:scale-105"
           />
           <span className="text-primary-foreground font-heading text-sm md:text-base font-bold hidden sm:block">
             WBS KPPU
