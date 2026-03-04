@@ -1,6 +1,7 @@
 // @ts-nocheck - Deno types not available in VS Code
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { Resend } from "https://esm.sh/resend@3.2.0";
 
 // Email HTML Template
 const createEmailHtml = (userName: string, ticketNumber: string, status: string) => {
@@ -194,11 +195,11 @@ serve(async (req) => {
 
     console.log("send-status-email: Sending to:", userEmail);
 
-    // Get external email service URL
-    const emailServiceUrl = Deno.env.get("EMAIL_SERVICE_URL");
+    // Send email via Resend (works with Edge Functions)
+    const resendApiKey = Deno.env.get("RESEND_API_KEY");
     
-    if (!emailServiceUrl) {
-      console.error("send-status-email: Missing EMAIL_SERVICE_URL");
+    if (!resendApiKey) {
+      console.error("send-status-email: Missing RESEND_API_KEY");
       return new Response(
         JSON.stringify({
           ok: false,
@@ -212,55 +213,69 @@ serve(async (req) => {
       );
     }
 
-    // Send email via external Node.js service
     try {
-      const response = await fetch(`${emailServiceUrl}/send-status-email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: userEmail,
-          userName: userName,
-          ticketNumber: report.ticket_number,
-          status: new_status,
-        }),
+      const resend = new Resend(resendApiKey);
+      
+      const statusLabels: Record<string, string> = {
+        submitted: "Diterima",
+        in_review: "Sedang Ditelaah",
+        in_progress: "Dalam Proses",
+        completed: "Selesai",
+        rejected: "Ditolak",
+      };
+
+      // For testing: send to admin email instead of user
+      const adminEmail = "zainfahri003@gmail.com";
+      
+      const { error } = await resend.emails.send({
+        from: "KPPU WBS <onboarding@resend.dev>",
+        to: adminEmail,
+        subject: `Notifikasi: Status Laporan ${report.ticket_number}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <div style="background: #1e40af; color: white; padding: 20px; text-align: center;">
+              <h2 style="margin: 0;">Notifikasi Status Laporan WBS KPPU</h2>
+            </div>
+            <div style="padding: 20px; background: #f9fafb;">
+              <p>Yth. <strong>${userName}</strong>,</p>
+              <p>Status laporan Anda telah diperbarui:</p>
+              <div style="background: white; padding: 16px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                <p style="margin: 8px 0;"><strong>Nomor Tiket:</strong> ${report.ticket_number}</p>
+                <p style="margin: 8px 0;"><strong>Status:</strong> <span style="color: #059669; font-weight: bold;">${statusLabels[new_status] || new_status}</span></p>
+              </div>
+              <p style="margin-top: 16px;">Masuk ke dashboard untuk detail lengkap.</p>
+            </div>
+          </div>
+        `,
       });
 
-      const result = await response.json();
-      
-      if (!response.ok || !result.ok) {
-        console.error("send-status-email: Email service error:", result);
-        
+      if (error) {
+        console.error("send-status-email: Resend error:", error);
         return new Response(
           JSON.stringify({
             ok: false,
             email_sent: false,
-            reason: result.error || "Failed to send email",
-            recipient: userEmail,
+            reason: error.message
           }),
           {
-            status: response.status || 500,
+            status: 500,
             headers: { ...corsHeaders, "Content-Type": "application/json" },
           }
         );
       }
 
-      console.log("send-status-email: Email sent successfully, messageId:", result.messageId);
-
+      console.log("send-status-email: Email sent successfully");
       return new Response(JSON.stringify({ ok: true, email_sent: true }), {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
-    } catch (fetchError) {
-      console.error("send-status-email: Fetch error:", fetchError);
-      
+    } catch (emailError) {
+      console.error("send-status-email: Email error:", emailError);
       return new Response(
         JSON.stringify({
           ok: false,
           email_sent: false,
-          reason: `Failed to connect email service: ${String(fetchError)}`,
-          recipient: userEmail,
+          reason: String(emailError)
         }),
         {
           status: 500,
